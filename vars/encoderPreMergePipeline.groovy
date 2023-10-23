@@ -65,7 +65,7 @@ def call(Map config = [:]){
 
                 sh "tar cvzf ${encoderAppArtifactName} ${encoderJenkinsBuildDir}"
 
-                uploadToNexus.upload(  artifact: "${encoderAppArtifactName}", 
+                nexusUtils.upload(  artifact: "${encoderAppArtifactName}", 
                                 nexusRepositoryURL:"${nexusEncoderAppSnapshotRepoURL}")
             }
 
