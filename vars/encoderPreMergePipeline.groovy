@@ -8,8 +8,6 @@ def call(Map config = [:]){
     def encoderServerScript = 'server.py'
     def encoderAppName = 'encoder-x265'
     def dockerRegistryName = 'anea11/encoding'
-    def dockerRegistryUrl = 'https://index.docker.io/v1/'
-    def dockerRegistryCredentials = 'dockerhub_credentials'
     def appVersion
 
     node {
@@ -23,7 +21,7 @@ def call(Map config = [:]){
                 buildImageName = "encoder-build-image:${env.BUILD_ID}"
                 buildImage = docker.build("${buildImageName}", '-f docker/Dockerfile-jenkins-agent .')
                 sh "mkdir ${encoderJenkinsBuildDir}"
-
+/*
                 buildImage.inside {
                     sh """
                         cd ${encoderJenkinsBuildDir}
@@ -31,6 +29,7 @@ def call(Map config = [:]){
                         make -j4
                     """
                 }
+                */
             }
 
             stage ('Unit tests') {
@@ -67,11 +66,8 @@ def call(Map config = [:]){
             }
 
             stage ('Push app docker image') {
-                docker.withRegistry("${dockerRegistryUrl}", "${dockerRegistryCredentials}")
-                {
-                    def imageTag = "encoder-${appVersion}"
-                    encoderAppImage.push "${imageTag}"
-                }
+                def imageTag = "encoder-${appVersion}"
+                dockerHubUtils.pushImage(image: encoderAppImage, tag: imageTag)
             }
         }
 
