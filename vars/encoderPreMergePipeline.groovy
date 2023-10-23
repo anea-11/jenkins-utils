@@ -21,24 +21,16 @@ def call(Map config = [:]){
                 buildImageName = "encoder-build-image:${env.BUILD_ID}"
                 buildImage = docker.build("${buildImageName}", '-f docker/Dockerfile-jenkins-agent .')
                 sh "mkdir ${encoderJenkinsBuildDir}"
-/*
+
                 buildImage.inside {
-                    sh """
-                        cd ${encoderJenkinsBuildDir}
-                        cmake ../source &&
-                        make -j4
-                    """
+                    encoderBuildUtils.buildApp(buildDir: encoderJenkinsBuildDir)
                 }
-                */
             }
 
             stage ('Unit tests') {
 
                 buildImage.inside {
-                    sh '''
-                        cd source/unit-tests
-                        ./run_tests.sh 1
-                    '''
+                   encoderBuildUtils.buildAndRunUnitTests()
                 }
             }
 
