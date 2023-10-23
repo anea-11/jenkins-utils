@@ -24,7 +24,7 @@ def call(Map config = [:]){
                 buildImageName = "encoder-build-image:${env.BUILD_ID}"
                 buildImage = docker.build("${buildImageName}", '-f docker/Dockerfile-jenkins-agent .')
                 sh "mkdir ${encoderJenkinsBuildDir}"
-
+/*
                 buildImage.inside {
                     sh """
                         cd ${encoderJenkinsBuildDir}
@@ -32,6 +32,7 @@ def call(Map config = [:]){
                         make -j4
                     """
                 }
+                */
             }
 
             stage ('Unit tests') {
@@ -64,7 +65,7 @@ def call(Map config = [:]){
 
                 sh "tar cvzf ${encoderAppArtifactName} ${encoderJenkinsBuildDir}"
 
-                uploadToNexus(  artifact: "${encoderAppArtifactName}", 
+                uploadToNexus.upload(  artifact: "${encoderAppArtifactName}", 
                                 nexusRepositoryURL:"${nexusEncoderAppSnapshotRepoURL}")
             }
 

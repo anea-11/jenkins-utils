@@ -1,4 +1,4 @@
-def call(Map config = [:]){
+def upload(Map config = [:]){
 
     withCredentials([usernameColonPassword(
                     credentialsId: 'nexus-credentials',
