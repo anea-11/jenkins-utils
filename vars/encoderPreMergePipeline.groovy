@@ -11,7 +11,6 @@ def call(Map config = [:]){
     def dockerRegistryUrl = 'https://index.docker.io/v1/'
     def dockerRegistryCredentials = 'dockerhub_credentials'
     def appVersion
-    def nexusEncoderAppSnapshotRepoURL= 'http://18.156.155.64:8081/repository/encoder-app-snapshot/'
 
     node {
         try {
@@ -24,7 +23,7 @@ def call(Map config = [:]){
                 buildImageName = "encoder-build-image:${env.BUILD_ID}"
                 buildImage = docker.build("${buildImageName}", '-f docker/Dockerfile-jenkins-agent .')
                 sh "mkdir ${encoderJenkinsBuildDir}"
-/*
+
                 buildImage.inside {
                     sh """
                         cd ${encoderJenkinsBuildDir}
@@ -32,7 +31,6 @@ def call(Map config = [:]){
                         make -j4
                     """
                 }
-                */
             }
 
             stage ('Unit tests') {
@@ -65,8 +63,7 @@ def call(Map config = [:]){
 
                 sh "tar cvzf ${encoderAppArtifactName} ${encoderJenkinsBuildDir}"
 
-                nexusUtils.upload(  artifact: "${encoderAppArtifactName}", 
-                                nexusRepositoryURL:"${nexusEncoderAppSnapshotRepoURL}")
+                nexusUtils.upload(artifact: "${encoderAppArtifactName}")
             }
 
             stage ('Push app docker image') {
