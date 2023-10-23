@@ -1,12 +1,12 @@
+import utils.GlobalVars
+
 def call(Map config = [:]){
 
     def buildImage
     def buildImageName
     def encoderAppImage
-    def encoderAppImageName
     def encoderJenkinsBuildDir = 'x265-jenkins-build'
     def encoderServerScript = 'server.py'
-    def encoderAppName = 'encoder-x265'
     def dockerRegistryName = 'anea11/encoding'
     def appVersion
 
@@ -44,8 +44,8 @@ def call(Map config = [:]){
 
             stage('Build app Docker image') {
 
-                encoderAppImageName = "${dockerRegistryName}:${env.BUILD_ID}"
-                encoderAppImage = docker.build("${encoderAppImageName}",
+                def encoderAppImageName = "${dockerRegistryName}:${env.BUILD_ID}"
+                encoderAppImage = docker.build( encoderAppImageName,
                                                 '--no-cache ' +
                                                 '-f docker/Dockerfile-jenkins-app-image ' +
                                                 "--build-arg X265_APP_ARTIFACT_DIR=${encoderJenkinsBuildDir} " +
@@ -58,7 +58,7 @@ def call(Map config = [:]){
                 def versionString = readFile 'version.txt'
                 appVersion = "v${versionString}-${BRANCH_NAME}-b${BUILD_ID}"
 
-                def encoderAppArtifactName = "${encoderAppName}-${appVersion}.tar.gz"
+                def encoderAppArtifactName = "${GlobalVars.ENCODER_APP_NAME}-${appVersion}.tar.gz"
 
                 sh "tar cvzf ${encoderAppArtifactName} ${encoderJenkinsBuildDir}"
 
@@ -66,7 +66,7 @@ def call(Map config = [:]){
             }
 
             stage ('Push app docker image') {
-                def imageTag = "encoder-${appVersion}"
+                def imageTag = "${GlobalVars.ENCODER_APP_NAME}-${appVersion}"
                 dockerHubUtils.pushImage(image: encoderAppImage, tag: imageTag)
             }
         }
