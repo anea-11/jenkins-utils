@@ -5,9 +5,7 @@ def call(Map config = [:]){
     def buildImage
     def buildImageName
     def encoderAppImage
-    def encoderJenkinsBuildDir = 'x265-jenkins-build'
     def encoderServerScript = 'server.py'
-    def dockerRegistryName = 'anea11/encoding'
     def appVersion
 
     node {
@@ -20,10 +18,10 @@ def call(Map config = [:]){
 
                 buildImageName = "encoder-build-image:${env.BUILD_ID}"
                 buildImage = docker.build("${buildImageName}", '-f docker/Dockerfile-jenkins-agent .')
-                sh "mkdir ${encoderJenkinsBuildDir}"
+                sh "mkdir ${GlobalVars.ENCODER_JENKINS_BUILD_DIR}"
 
                 buildImage.inside {
-                    encoderBuildUtils.buildApp(buildDir: encoderJenkinsBuildDir)
+                    encoderBuildUtils.buildApp()
                 }
             }
 
@@ -35,14 +33,7 @@ def call(Map config = [:]){
             }
 
             stage('Build app Docker image') {
-
-                def encoderAppImageName = "${dockerRegistryName}:${env.BUILD_ID}"
-                encoderAppImage = docker.build( encoderAppImageName,
-                                                '--no-cache ' +
-                                                '-f docker/Dockerfile-jenkins-app-image ' +
-                                                "--build-arg X265_APP_ARTIFACT_DIR=${encoderJenkinsBuildDir} " +
-                                                "--build-arg SERVER_SCRIPT=${encoderServerScript} .")
-
+                encoderAppImage = encoderBuildUtils.buildAppDockerImage()
             }
 
             stage ('Upload app artifacts') {
@@ -52,7 +43,7 @@ def call(Map config = [:]){
 
                 def encoderAppArtifactName = "${GlobalVars.ENCODER_APP_NAME}-${appVersion}.tar.gz"
 
-                sh "tar cvzf ${encoderAppArtifactName} ${encoderJenkinsBuildDir}"
+                sh "tar cvzf ${encoderAppArtifactName} ${GlobalVars.ENCODER_JENKINS_BUILD_DIR}"
 
                 nexusUtils.upload(artifact: "${encoderAppArtifactName}")
             }
@@ -72,7 +63,7 @@ def call(Map config = [:]){
             cleanWs()
             try {
                 sh "docker rmi -f ${buildImageName}"
-                sh "docker rmi -f \$(docker images ${dockerRegistryName} -q)"
+                sh "docker rmi -f \$(docker images ${GlobalVars.ENCODING_DOCKER_REGISTRY} -q)"
             }
             catch(Exception e) {}
         }
