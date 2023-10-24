@@ -11,11 +11,8 @@ def call(Map config = [:]){
     node {
         try {
             stage('Checkout') {
-                checkout scmGit(branches: [[name: '*/main']], 
-                                extensions: [], 
-                                userRemoteConfigs: [[
-                                    credentialsId: 'github-credentials', 
-                                    url: 'https://github.com/anea-11/x265.git']])
+
+                checkout scm
 
                 def versionString = readFile 'version.txt'
                 appVersion = new Version(versionString)
