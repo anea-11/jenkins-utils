@@ -11,9 +11,10 @@ def call(Map config = [:]){
     node {
         try {
             stage('Checkout') {
-
                 checkout scm
 
+                echo "${PR_ACTION}"
+                echo "${PR_MERGE_TIMESTAMP}"
                 def versionString = readFile 'version.txt'
                 appVersion = new Version(versionString)
             }
