@@ -12,6 +12,9 @@ def call(Map config = [:]){
         try {
             stage('Checkout') {
                 checkout scm
+                def versionString = readFile 'version.txt'
+                appVersion = new Version(versionString, "${BRANCH_NAME}", "${BUILD_ID}")
+                echo ${appVersion}
             }
 
             stage('Build app') {
