@@ -21,6 +21,7 @@ class Version implements Serializable {
         this.buildId = buildId
     }
 
+    @Override @NonCPS
     String toString() {
         if (branchName.isEmpty() && buildId.isEmpty()) {
             // Release version

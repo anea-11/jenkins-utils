@@ -42,6 +42,7 @@ def call(Map config = [:]){
                 appVersion = new Version(versionString, "${BRANCH_NAME}", "${BUILD_ID}")
 
                 def encoderAppArtifactName = "${GlobalVars.ENCODER_APP_NAME}-${appVersion}.tar.gz"
+                echo ${appVersion}
 
                 sh "tar cvzf ${encoderAppArtifactName} ${GlobalVars.ENCODER_JENKINS_BUILD_DIR}"
 
