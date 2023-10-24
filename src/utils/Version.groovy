@@ -8,7 +8,7 @@ class Version implements Serializable {
     String branchName = ""
     String buildId = ""
 
-    Version(String versionString, String branchName = "", String buildId = "") {
+    public Version(String versionString, String branchName = "", String buildId = "") {
         def parts = versionString.split("\\.")
         if (parts.size() != 3) {
             throw new IllegalArgumentException("Invalid versionString format: ${versionString}")
@@ -22,7 +22,7 @@ class Version implements Serializable {
     }
 
     @Override @NonCPS
-    String toString() {
+    public String toString() {
         if (branchName.isEmpty() && buildId.isEmpty()) {
             // Release version
             return "${major}.${minor}.${patch}"
