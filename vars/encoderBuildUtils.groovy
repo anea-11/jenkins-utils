@@ -27,3 +27,9 @@ def buildAppDockerImage(Map config = [:]){
                                         "--build-arg SERVER_SCRIPT=${encoderServerScript} .")
     return encoderAppImage
 }
+
+def tarBuildArtifacts(Map config = [:]){
+    def encoderAppArtifacts = "${GlobalVars.ENCODER_APP_NAME}-${config.version}.tar.gz"
+    sh "tar cvzf ${encoderAppArtifacts} ${GlobalVars.ENCODER_JENKINS_BUILD_DIR}"
+    return encoderAppArtifacts
+}
