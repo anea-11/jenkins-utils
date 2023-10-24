@@ -40,7 +40,7 @@ def call(Map config = [:]){
             }
 
             stage ('Upload app artifacts') {
-                def encoderAppArtifacts = encoderBuildUtils.tarBuildArtifacts(version: appVersion)
+                def encoderAppArtifact = encoderBuildUtils.tarBuildArtifacts(version: appVersion)
                 nexusUtils.upload(artifact: encoderAppArtifact)
             }
 

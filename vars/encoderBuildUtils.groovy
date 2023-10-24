@@ -29,7 +29,7 @@ def buildAppDockerImage(Map config = [:]){
 }
 
 def tarBuildArtifacts(Map config = [:]){
-    def encoderAppArtifacts = "${GlobalVars.ENCODER_APP_NAME}-${config.version}.tar.gz"
-    sh "tar cvzf ${encoderAppArtifacts} ${GlobalVars.ENCODER_JENKINS_BUILD_DIR}"
-    return encoderAppArtifacts
+    def encoderAppArtifact = "${GlobalVars.ENCODER_APP_NAME}-${config.version}.tar.gz"
+    sh "tar cvzf ${encoderAppArtifact} ${GlobalVars.ENCODER_JENKINS_BUILD_DIR}"
+    return encoderAppArtifact
 }
