@@ -1,35 +1,58 @@
 import utils.GlobalVars
 import utils.Version
 
-def call(Map config = [:]){
+def getRepositoryURL() {
+    def remote = sh(script: 'git remote -v', returnStdout: true).trim()
+    def repositoryURL = ""
+    if (remote.contains(GlobalVars.ENCODER_APP_GITHUB_URL))
+        repositoryURL = GlobalVars.ENCODER_APP_GITHUB_URL.substring(8)
 
-    def lastCommitAuthor = sh(script: 'git log -1 --pretty=%an', returnStdout: true).trim()
+    return repositoryURL
+}
 
-    if (lastCommitAuthor != "Jenkins") {
-        config.appVersion.bumpVersion()
-        writeFile file: "${config.versionFile}", text: "${config.appVersion}"
+def setJenkinsGithubCredentialsForRepository(Map config = [:]) {
 
-        def remote = sh(script: 'git remote -v', returnStdout: true).trim()
-        def repositoryURL
-        if (remote.contains(GlobalVars.ENCODER_APP_GITHUB_URL))
-            repositoryURL = GlobalVars.ENCODER_APP_GITHUB_URL.substring(8)
+    def repositoryURL = getRepositoryURL()
 
-        withCredentials([usernameColonPassword(
+    withCredentials([usernameColonPassword(
             credentialsId: GlobalVars.JENKINS_GITHUB_CREDENTIALS_ID,
             variable: 'GITHUB_USERPASS')]) {
                 sh """
                     git remote set-url origin https://${GITHUB_USERPASS}@${repositoryURL}
                 """
-        }
+    }
+}
 
-        sh """
-            git checkout master
-            git config user.email "jenkins-@tutanota.com"
-            git config user.name "Jenkins"
-            git add ${config.versionFile}
-            git commit -m "CICD_VERSION_BUMP PATCH"
-            git push
-        """
+def commitUpdatedVersionFile(Map config = [:]) {
+
+    def baseBranch = "main"
+    def repositoryURL = getRepositoryURL()
+
+    if repositoryURL.contains(GlobalVars.ENCODER_APP_GITHUB_URL)
+        baseBranch = "master"
+
+    sh """
+        git checkout ${baseBranch}
+        git config user.email "jenkins-@tutanota.com"
+        git config user.name "Jenkins"
+        git add ${config.versionFile}
+        git commit -m "CICD_VERSION_BUMP PATCH"
+        git push
+    """
+}
+
+def call(Map config = [:]){
+
+    def lastCommitAuthor = sh(script: 'git log -1 --pretty=%an', returnStdout: true).trim()
+
+    if (lastCommitAuthor != "Jenkins") {
+
+        config.appVersion.bumpVersion()
+        writeFile file: config.versionFile, text: "${config.appVersion}"
+
+        setJenkinsGithubCredentialsForRepository(Map config = [:])
+
+        commitUpdatedVersionFile(versionFile: config.versionFile)
 
         echo "Jenkins automatically bumped app version to ${config.appVersion}"
     }
