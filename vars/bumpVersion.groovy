@@ -28,7 +28,7 @@ def commitUpdatedVersionFile(Map config = [:]) {
     def baseBranch = "main"
     def repositoryURL = getRepositoryURL()
 
-    if repositoryURL.contains(GlobalVars.ENCODER_APP_GITHUB_URL)
+    if (repositoryURL.contains(GlobalVars.ENCODER_APP_GITHUB_URL))
         baseBranch = "master"
 
     sh """
