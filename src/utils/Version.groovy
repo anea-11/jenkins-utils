@@ -31,4 +31,9 @@ class Version implements Serializable {
             return "${major}.${minor}.${patch}-${branchName}-b${buildId}"
         }
     }
+
+    @NonCPS
+    public void bumpVersion() {
+        this.patch++
+    }
 }
