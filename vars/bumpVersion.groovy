@@ -11,8 +11,8 @@ def call(Map config = [:]){
 
         def remote = sh(script: 'git remote -v', returnStdout: true).trim()
         def repositoryURL
-        if (remote.contains(ENCODER_APP_GITHUB_URL)) 
-            repositoryURL = ENCODER_APP_GITHUB_URL.substring(8)
+        if (remote.contains(GlobalVars.ENCODER_APP_GITHUB_URL))
+            repositoryURL = GlobalVars.ENCODER_APP_GITHUB_URL.substring(8)
 
         withCredentials([usernameColonPassword(
             credentialsId: GlobalVars.JENKINS_GITHUB_CREDENTIALS_ID,
