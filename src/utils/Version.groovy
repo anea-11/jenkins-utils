@@ -33,7 +33,20 @@ class Version implements Serializable {
     }
 
     @NonCPS
-    public void bumpVersion() {
+    public void bumpPatchVersion() {
         this.patch++
+    }
+
+    @NonCPS
+    public void bumpMinorVersion() {
+        this.patch = 0
+        this.minor++
+    }
+
+    @NonCPS
+    public void bumpMajorVersion() {
+        this.patch = 0
+        this.minor = 0
+        this.major++
     }
 }

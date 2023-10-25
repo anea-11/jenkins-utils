@@ -18,8 +18,8 @@ def call(Map config = [:]){
             }
 
             stage('Bump version') {
-                bumpVersion(appVersion: appVersion,
-                            versionFile: 'version.txt')
+                appVersion = bumpVersion(appVersion: appVersion,
+                                versionFile: 'version.txt')
             }
 
             stage('Build app') {

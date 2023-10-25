@@ -41,22 +41,41 @@ def commitUpdatedVersionFile(Map config = [:]) {
     """
 }
 
+def bump(Map config = [:]){
+
+    def lastCommitMessage = sh(script: 'git log -1 --pretty=%s', returnStdout: true).trim()
+
+    if (lastCommitMessage.contains(GlobalVars.MINOR_VERSION_BUMP_COMMIT_COMMAND)){
+            config.appVersion.bumpMinorVersion()
+    }
+    else if (lastCommitMessage.contains(GlobalVars.MAJOR_VERSION_BUMP_COMMIT_COMMAND)){
+        config.appVersion.bumpMajorVersion()
+    }
+    else {
+        config.appVersion.bumpPatchVersion()
+    }
+}
+
 def call(Map config = [:]){
 
     def lastCommitAuthor = sh(script: 'git log -1 --pretty=%an', returnStdout: true).trim()
+    def bumpedVersion = config.appVersion
 
     if (lastCommitAuthor != "Jenkins") {
 
-        config.appVersion.bumpVersion()
-        writeFile file: config.versionFile, text: "${config.appVersion}"
+        bumpedVersion = bump(appVersion: config.appVersion)
+
+        writeFile file: config.versionFile, text: "${bumpedVersion}"
 
         setJenkinsGithubCredentialsForRepository()
 
         commitUpdatedVersionFile(versionFile: config.versionFile)
 
-        echo "Jenkins automatically bumped app version to ${config.appVersion}"
+        echo "Jenkins automatically bumped app version to ${bumpedVersion}"
     }
     else {
         echo "Skipping automatic version bump, because it was already bumped in the last commit"
     }
+
+    return bumpedVersion
 }

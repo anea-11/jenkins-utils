@@ -11,5 +11,6 @@ class GlobalVars {
     public static String ENCODER_JENKINS_BUILD_DIR = 'x265-jenkins-build'
     public static String JENKINS_GITHUB_CREDENTIALS_ID = 'jenkins-bump-version-github-credentials'
     public static String ENCODER_APP_GITHUB_URL = 'github.com/anea-11/x265'
-
+    public static String MINOR_VERSION_BUMP_COMMIT_COMMAND = '__MINOR_VERSION_BUMP'
+    public static String MAJOR_VERSION_BUMP_COMMIT_COMMAND = '__MAJOR_VERSION_BUMP'
 }
