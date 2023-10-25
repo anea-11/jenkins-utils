@@ -16,7 +16,7 @@ def getRepository(Map config = [:]){
 
 def upload(Map config = [:]){
 
-    repository = getRepository(config.artifact)
+    repository = getRepository(artifact: config.artifact)
 
     withCredentials([usernameColonPassword(
                     credentialsId: GlobalVars.NEXUS_CREDENTIALS_ID,
