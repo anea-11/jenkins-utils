@@ -36,7 +36,7 @@ def commitUpdatedVersionFile(Map config = [:]) {
         git config user.email "jenkins-@tutanota.com"
         git config user.name "Jenkins"
         git add ${config.versionFile}
-        git commit -m "CICD_VERSION_BUMP PATCH"
+        git commit -m "CICD_VERSION_BUMP"
         git push
     """
 }
@@ -44,16 +44,19 @@ def commitUpdatedVersionFile(Map config = [:]) {
 def bump(Map config = [:]){
 
     def lastCommitMessage = sh(script: 'git log -1 --pretty=%s', returnStdout: true).trim()
+    def bumpedVersion = config.appVersion
 
     if (lastCommitMessage.contains(GlobalVars.MINOR_VERSION_BUMP_COMMIT_COMMAND)){
-            config.appVersion.bumpMinorVersion()
+        bumpedVersion.bumpMinorVersion()
     }
     else if (lastCommitMessage.contains(GlobalVars.MAJOR_VERSION_BUMP_COMMIT_COMMAND)){
-        config.appVersion.bumpMajorVersion()
+        bumpedVersion.bumpMajorVersion()
     }
     else {
-        config.appVersion.bumpPatchVersion()
+        bumpedVersion.bumpPatchVersion()
     }
+
+    return bumpedVersion
 }
 
 def call(Map config = [:]){
