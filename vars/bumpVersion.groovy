@@ -75,7 +75,7 @@ def call(Map config = [:]){
 
         commitUpdatedVersionFile(versionFile: config.versionFile)
 
-        echo "Jenkins automatically bumped app version to ${bumpedVersion}"
+        echo "Jenkins automatically bumped app version to ${bumpedVersionString}"
     }
     else {
         echo "Skipping automatic version bump, because it was already bumped in the last commit"
