@@ -67,8 +67,9 @@ def call(Map config = [:]){
     if (lastCommitAuthor != "Jenkins") {
 
         bumpedVersion = bump(appVersion: config.appVersion)
+        bumpedVersionString = bumpedVersion.getMajorMinorPatch()
 
-        writeFile file: config.versionFile, text: "${bumpedVersion}"
+        writeFile file: config.versionFile, text: "${bumpedVersionString}"
 
         setJenkinsGithubCredentialsForRepository()
 

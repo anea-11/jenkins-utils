@@ -49,4 +49,9 @@ class Version implements Serializable {
         this.minor = 0
         this.major++
     }
+
+    @Override @NonCPS
+    public String getMajorMinorPatch() {
+        return "${major}.${minor}.${patch}"
+    }
 }
