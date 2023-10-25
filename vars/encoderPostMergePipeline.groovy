@@ -14,7 +14,7 @@ def call(Map config = [:]){
                 checkout scm
 
                 def versionString = readFile 'version.txt'
-                appVersion = new Version(versionString, "${BRANCH_NAME}", "${BUILD_ID}")
+                appVersion = new Version(versionString, "master", "${BUILD_ID}")
             }
 
             stage('Bump version') {
