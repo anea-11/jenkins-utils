@@ -33,6 +33,7 @@ def call(Map config = [:]){
                     }
 
                     sh """
+                        git checkout master
                         git config user.email "jenkins-@tutanota.com"
                         git config user.name "Jenkins"
                         git add version.txt
