@@ -10,7 +10,7 @@ def getRepositoryURL() {
     return repositoryURL
 }
 
-def setJenkinsGithubCredentialsForRepository(Map config = [:]) {
+def setJenkinsGithubCredentialsForRepository() {
 
     def repositoryURL = getRepositoryURL()
 
@@ -50,7 +50,7 @@ def call(Map config = [:]){
         config.appVersion.bumpVersion()
         writeFile file: config.versionFile, text: "${config.appVersion}"
 
-        setJenkinsGithubCredentialsForRepository(Map config = [:])
+        setJenkinsGithubCredentialsForRepository()
 
         commitUpdatedVersionFile(versionFile: config.versionFile)
 
