@@ -18,34 +18,8 @@ def call(Map config = [:]){
             }
 
             stage('Bump version') {
-                def lastCommitAuthor = sh(script: 'git log -1 --pretty=%an', returnStdout: true).trim()
-
-                if (lastCommitAuthor != "Jenkins") {
-                    appVersion.bumpVersion()
-                    writeFile file: 'version.txt', text: "${appVersion}"
-
-                    withCredentials([usernameColonPassword(
-                        credentialsId: GlobalVars.JENKINS_GITHUB_CREDENTIALS_ID,
-                        variable: 'GITHUB_USERPASS')]) {
-                            sh """
-                                git remote set-url origin https://${GITHUB_USERPASS}@github.com/anea-11/x265.git
-                            """
-                    }
-
-                    sh """
-                        git checkout master
-                        git config user.email "jenkins-@tutanota.com"
-                        git config user.name "Jenkins"
-                        git add version.txt
-                        git commit -m "CICD_VERSION_BUMP PATCH"
-                        git push
-                    """
-
-                    echo "Jenkins automatically bumped app version to ${appVersion}"
-                }
-                else {
-                    echo "Skipping automatic version bump, because it was already bumped in the last commit"
-                }
+                bumpVersion(appVersion: appVersion,
+                            versionFile: 'version.txt')
             }
 
             stage('Build app') {
