@@ -5,7 +5,7 @@ def getRepositoryURL() {
     def remote = sh(script: 'git remote -v', returnStdout: true).trim()
     def repositoryURL = ""
     if (remote.contains(GlobalVars.ENCODER_APP_GITHUB_URL))
-        repositoryURL = GlobalVars.ENCODER_APP_GITHUB_URL.substring(8)
+        repositoryURL = GlobalVars.ENCODER_APP_GITHUB_URL
 
     return repositoryURL
 }

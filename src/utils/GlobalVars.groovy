@@ -10,6 +10,6 @@ class GlobalVars {
     public static String ENCODING_DOCKER_REGISTRY = 'anea11/encoding'
     public static String ENCODER_JENKINS_BUILD_DIR = 'x265-jenkins-build'
     public static String JENKINS_GITHUB_CREDENTIALS_ID = 'jenkins-bump-version-github-credentials'
-    public static String ENCODER_APP_GITHUB_URL = 'https://github.com/anea-11/x265'
+    public static String ENCODER_APP_GITHUB_URL = 'github.com/anea-11/x265'
 
 }
