@@ -1,7 +1,7 @@
 import utils.GlobalVars
 import utils.Version
 
-def bumpVersion(Map config = [:]){
+def call(Map config = [:]){
 
     def lastCommitAuthor = sh(script: 'git log -1 --pretty=%an', returnStdout: true).trim()
 
