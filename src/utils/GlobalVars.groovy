@@ -14,4 +14,5 @@ class GlobalVars {
     public static String MINOR_VERSION_BUMP_COMMIT_COMMAND = '__MINOR_VERSION_BUMP'
     public static String MAJOR_VERSION_BUMP_COMMIT_COMMAND = '__MAJOR_VERSION_BUMP'
     public static String FRONTEND_APP_NAME = 'frontend'
+    public static String FRONTEND_APP_GITHUB_URL = 'github.com/anea-11/frontend-demo'
 }

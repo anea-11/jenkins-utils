@@ -6,6 +6,8 @@ def getRepositoryURL() {
     def repositoryURL = ""
     if (remote.contains(GlobalVars.ENCODER_APP_GITHUB_URL))
         repositoryURL = GlobalVars.ENCODER_APP_GITHUB_URL
+    else if (remote.contains(GlobalVars.FRONTEND_APP_GITHUB_URL))
+        repositoryURL = GlobalVars.FRONTEND_APP_GITHUB_URL
 
     return repositoryURL
 }
