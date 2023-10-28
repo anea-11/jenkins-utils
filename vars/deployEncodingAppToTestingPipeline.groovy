@@ -10,14 +10,16 @@ def call(Map config = [:]){
                         Snapshot version of encoder service to deploy.
                         Example: 1.0.0-master-b21.
                         Only "master" snapshots are accepted.
-                    """
+                    """,
+                    trim: true
             ),
             string( name: 'frontend_service_version', 
                     description: """
                         Snapshot version of frontend service to deploy.
                         Example: 1.0.0-main-b21.
                         Only "main" snapshots are accepted.
-                    """
+                    """,
+                    trim: true
             ),
     ])])
 
