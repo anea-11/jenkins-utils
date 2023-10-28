@@ -31,11 +31,21 @@ def call(Map config = [:]){
             }
 
             stage ('Deploy encoding app') {
-                sh """
-                    ansible-playbook playbooks/deploy-encoding-app.yaml \
-                    -e encoder_img_version=${params.encoder_service_version} \
-                    -e frontend_img_version=${params.frontend_service_version}
-                """
+                docker.withRegistry(GlobalVars.DOCKERHUB_REGISTRY_URL, GlobalVars.DOCKERHUB_CREDENTIALS_ID){
+                    sh """
+                        ansible-playbook playbooks/deploy-encoding-app.yaml \
+                        -e encoder_img_version=${params.encoder_service_version} \
+                        -e frontend_img_version=${params.frontend_service_version}
+                    """
+                }
+            }
+
+            stage ('Run integration tests') {
+                echo 'Mimicking running integration tests'
+            }
+
+            stage ('Promote verisons to releases') {
+                // TODO
             }
         }
 
