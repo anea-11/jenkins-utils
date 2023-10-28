@@ -31,12 +31,16 @@ def call(Map config = [:]){
             }
 
             stage ('Deploy encoding app') {
-                docker.withRegistry(GlobalVars.DOCKERHUB_REGISTRY_URL, GlobalVars.DOCKERHUB_CREDENTIALS_ID){
-                    sh """
-                        ansible-playbook playbooks/deploy-encoding-app.yaml \
-                        -e encoder_img_version=${params.encoder_service_version} \
-                        -e frontend_img_version=${params.frontend_service_version}
-                    """
+                withCredentials([usernamePassword(credentialsId: GlobalVars.DOCKERHUB_CREDENTIALS_ID,
+                    passwordVariable: 'dockerhub_pass',
+                    usernameVariable: 'dockerhub_user')]) {
+                        sh """
+                            ansible-playbook playbooks/deploy-encoding-app.yaml \
+                            -e encoder_img_version=${params.encoder_service_version} \
+                            -e frontend_img_version=${params.frontend_service_version} \
+                            -e dockerhub_user=${dockerhub_user} \
+                            -e dockerhub_pass=${dockerhub_pass}
+                        """
                 }
             }
 
