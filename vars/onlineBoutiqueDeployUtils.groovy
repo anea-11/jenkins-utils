@@ -9,6 +9,7 @@ def deployToEKS(Map config = [:]){
         sh '''
             export AWS_ACCESS_KEY_ID=$aws_user
             export AWS_SECRET_ACCESS_KEY=$aws_pass
+            echo \$AWS_ACCESS_KEY_ID
             export AWS_DEFAULT_REGION=$config.aws_region
             export KUBECONFIG=\$(pwd)/kubeconfig
             export HOME=\$(pwd)
