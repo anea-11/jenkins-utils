@@ -7,7 +7,10 @@ def deployToEKS(Map config = [:]){
                         usernameVariable: 'aws_user')]) {
 
         def aws_region=config.aws_region
+        def aws_eks_cluster_name=config.aws_eks_cluster_name
+        def k8s_config_version=config.k8s_config_version
 
+        // sh block must not use groovy string interpolation, because it passes sensitive data
         sh '''
             export AWS_ACCESS_KEY_ID=$aws_user
             export AWS_SECRET_ACCESS_KEY=$aws_pass
