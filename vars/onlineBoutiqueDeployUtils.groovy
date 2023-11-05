@@ -6,13 +6,9 @@ def deployToEKS(Map config = [:]){
                         passwordVariable: 'aws_pass',
                         usernameVariable: 'aws_user')]) {
 
-        // Export sensitive date without Groovy string interpolation
-        sh '''
+        sh """
             export AWS_ACCESS_KEY_ID=$aws_user
             export AWS_SECRET_ACCESS_KEY=$aws_pass
-        '''
-
-        sh """
             export AWS_DEFAULT_REGION=${config.aws_region}
             export KUBECONFIG=\$(pwd)/kubeconfig
             export HOME=\$(pwd)
