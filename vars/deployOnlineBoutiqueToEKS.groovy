@@ -12,7 +12,7 @@ def call(Map config = [:]){
                     """,
                     default: 'main',
                     trim: true
-            )
+            ),
             string( name: 'aws_eks_cluster_name', 
                     description: """
                         Name of the EKS cluster to which the app will be deployed.
