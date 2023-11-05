@@ -39,7 +39,7 @@ def call(Map config = [:]){
             }
 
             stage ('Deploy app') {
-                deployAgentImage = docker.build("${deployAgentImageName}", '-f docker/Dockerfile-ansible-jenkins-agent .')
+                deployAgentImage = docker.build("${deployAgentImageName}", '-f docker/Dockerfile-ansible-jenkins-agent-arm .')
 
                 deployAgentImage.inside {
                     onlineBoutiqueDeployUtils.deployToEKS(  aws_region: "${params.aws_region}",
