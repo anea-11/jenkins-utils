@@ -17,4 +17,5 @@ class GlobalVars {
     public static String FRONTEND_APP_GITHUB_URL = 'github.com/anea-11/frontend-demo'
     public static String INFRA_CONFIG_REPO_URL = 'https://github.com/anea-11/infra-config'
     public static String GITHUB_CREDENTIALS_ID = 'github-credentials'
+    public static String AWS_CREDENTIALS_ID = 'aws-credentials'
 }
