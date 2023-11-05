@@ -10,21 +10,21 @@ def call(Map config = [:]){
                     description: """
                         Branch or tag on https://github.com/anea-11/kubernetes-manifests which contains desired configs.
                     """,
-                    default: 'main',
+                    defaultValue: 'main',
                     trim: true
             ),
             string( name: 'aws_eks_cluster_name', 
                     description: """
                         Name of the EKS cluster to which the app will be deployed.
                     """,
-                    default: 'online_boutique_cluster',
+                    defaultValue: 'online_boutique_cluster',
                     trim: true
             ),
             string( name: 'aws_region', 
                     description: """
                         AWS region in which the EKS cluster resides.
                     """,
-                    default: 'eu-west-1',
+                    defaultValue: 'eu-west-1',
                     trim: true
             )
     ])])
