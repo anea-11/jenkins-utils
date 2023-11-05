@@ -15,10 +15,10 @@ def deployToEKS(Map config = [:]){
             export KUBECONFIG=\$(pwd)/kubeconfig
             export HOME=\$(pwd)
 
-            aws eks update-kubeconfig --name ${config.aws_eks_cluster_name}
+            aws eks update-kubeconfig --name $aws_eks_cluster_name
 
             ansible-playbook playbooks/deploy-online-boutique.yaml \
-                -e k8s_config_version=${config.k8s_config_version} \
+                -e k8s_config_version=$k8s_config_version \
         '''
     }
 }
