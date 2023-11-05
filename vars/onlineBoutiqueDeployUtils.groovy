@@ -10,6 +10,7 @@ def deployToEKS(Map config = [:]){
             export AWS_SECRET_ACCESS_KEY=${aws_pass}
             export AWS_DEFAULT_REGION=${config.aws_region}
             export KUBECONFIG=\$(pwd)/kubeconfig
+            export HOME=\$(pwd)
 
             aws eks update-kubeconfig --name ${config.aws_eks_cluster_name}
 
