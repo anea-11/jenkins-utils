@@ -20,3 +20,10 @@ This projects contains a Jenkins shared library which is used to define CICD pip
 | Pipeline                  | Description                                            |
 |-------------------------- | -----------------------------------------------------  |
 | deployOnlineBoutiqueToEKS | manually triggered to deploy app to EKS cluster on AWS |
+
+# encoding-app pipelines
+
+* pre-merge and post-merge pipelines for both services follow the same structure, outlined below
+
+![encoding-app-pipelines](docs/images/encoding-app-pipelines.jpg)
+
